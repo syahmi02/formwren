@@ -1,0 +1,26 @@
+{
+  "name": "@fw/cli",
+  "version": "0.0.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "type": "module",
+  "bin": {
+    "fw": "./bin/fw.mjs"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./vite": "./src/vite-plugin.ts",
+    "./client": {
+      "types": "./client.d.ts"
+    }
+  },
+  "dependencies": {
+    "@fw/components": "workspace:*",
+    "@fw/core": "workspace:*",
+    "@fw/format": "workspace:*",
+    "@vitejs/plugin-react": "^6.2.1",
+    "tsx": "^4.23.15",
+    "typescript": "~6.0.3",
+    "vite": "^8.3.6"
+  }
+}

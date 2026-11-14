@@ -1,0 +1,90 @@
+{
+  "name": "fw-designer",
+  "displayName": "Formwren Form Designer",
+  "description": "A visual designer for *.form.json files. The text stays the source of truth.",
+  "version": "0.0.1",
+  "private": true,
+  "publisher": "local",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/extension.cjs",
+  "engines": {
+    "vscode": "^1.146.0"
+  },
+  "categories": [
+    "Visualization",
+    "Other"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": "limited",
+      "description": "Form scripts don't run in the preview until the workspace is trusted."
+    }
+  },
+  "activationEvents": [
+    "onCustomEditor:fw.formDesigner"
+  ],
+  "contributes": {
+    "customEditors": [
+      {
+        "viewType": "fw.formDesigner",
+        "displayName": "Form Designer",
+        "selector": [
+          {
+            "filenamePattern": "*.form.json"
+          }
+        ],
+        "priority": "option"
+      }
+    ],
+    "commands": [
+      {
+        "command": "fw.openWithDesigner",
+        "title": "Open with designer",
+        "category": "Form Designer"
+      },
+      {
+        "command": "fw.openTextEditor",
+        "title": "Open text editor",
+        "category": "Form Designer"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "fw.openWithDesigner",
+          "when": "resourceFilename =~ /[.]form[.]json$/",
+          "group": "navigation@50"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "fw.openWithDesigner",
+          "when": "resourceFilename =~ /[.]form[.]json$/ && activeCustomEditorId != fw.formDesigner",
+          "group": "navigation"
+        },
+        {
+          "command": "fw.openTextEditor",
+          "when": "activeCustomEditorId == fw.formDesigner",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "fw.openWithDesigner",
+          "when": "resourceFilename =~ /[.]form[.]json$/"
+        },
+        {
+          "command": "fw.openTextEditor",
+          "when": "activeCustomEditorId == fw.formDesigner"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "build": "node scripts/build.ts",
+    "package": "node scripts/package.ts",
+    "install-local": "node scripts/install.ts",
+    "test": "node scripts/test.ts"
+  }
+}

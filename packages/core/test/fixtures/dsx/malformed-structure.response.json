@@ -1,0 +1,7 @@
+{
+  "status": {
+    "ok": false,
+    "code": "bad-request",
+    "message": "The request is not a valid DSX request"
+  }
+}

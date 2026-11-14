@@ -1,0 +1,38 @@
+{
+  "formatVersion": 1,   "id": "hr.Hand",
+  "title": "Formatted by hand",
+
+  "customTopLevel": { "keep": ["me", 1, true, null] },
+
+  "datasets": [
+    { "id": "dsEmp", "keys": ["empNo"],
+      "columns": [
+        { "id": "empNo", "type": "string", "size": 10, "futureColumnOption": "x" },
+        {"id":"empName","type":"string"},
+
+        { "id": "salary", "type": "decimal", "precision": 12, "scale": 0 }
+      ] }
+  ],
+  "components": [
+    { "id": "empNameInput", "type": "TextInput",
+      "layout": { "left": 16, "top": 16, "width": 200, "height": 28, "futureEdge": 1 },
+      "props": { "label": "Name", "maxLength": 50 },
+      "bind": { "value": "dsEmp.empName" } },
+
+    { "id": "panel", "type": "Panel",
+      "layout": { "left": 0, "top": 50, "width": 300, "height": 200 },
+      "children": [
+        { "id": "inner", "type": "Label", "layout": { "left": 1, "top": 2, "width": 3, "height": 4 }, "props": { "text": "Hi" } }
+      ] },
+
+    { "id": "empGrid", "type": "Grid",
+      "layout": { "left": 16, "top": 56, "right": 16, "bottom": 16 },
+      "bind": { "dataset": "dsEmp" },
+      "props": {
+        "columns": [ { "id": "c1", "width": 90 }, { "id": "c2", "width": 160 } ],
+        "recordRows": [
+          { "cells": [ { "field": "empNo" }, { "field": "empName", "editor": "text", "futureCellOption": [1, 2] } ] }
+        ]
+      } }
+  ]
+}

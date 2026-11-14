@@ -1,0 +1,81 @@
+{
+  "dsx": 1,
+  "txId": "TX",
+  "service": "hr.org.save",
+  "datasets": {
+    "dsEmp": {
+      "columns": [
+        {
+          "id": "empNo",
+          "type": "string",
+          "size": 10,
+          "key": true
+        },
+        {
+          "id": "empName",
+          "type": "string",
+          "size": 50
+        },
+        {
+          "id": "salary",
+          "type": "decimal",
+          "precision": 12,
+          "scale": 0
+        },
+        {
+          "id": "ver",
+          "type": "int",
+          "version": true
+        }
+      ],
+      "changes": [
+        {
+          "s": "U",
+          "id": 0,
+          "v": [
+            "E1001",
+            "Minji Kim",
+            "5200000",
+            7
+          ],
+          "o": {
+            "1": "Minju Kim"
+          }
+        }
+      ]
+    },
+    "dsDept": {
+      "columns": [
+        {
+          "id": "deptCode",
+          "type": "string",
+          "size": 4,
+          "key": true
+        },
+        {
+          "id": "deptName",
+          "type": "string",
+          "size": 30
+        }
+      ],
+      "changes": [
+        {
+          "s": "D",
+          "id": 1,
+          "v": [
+            "D020",
+            "Ops"
+          ]
+        },
+        {
+          "s": "I",
+          "id": 2,
+          "v": [
+            null,
+            "HR"
+          ]
+        }
+      ]
+    }
+  }
+}

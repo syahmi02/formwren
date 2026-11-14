@@ -1,0 +1,10 @@
+{
+  "status": { "ok": true },
+  "params": { "saved": 3 },
+  "applied": {
+    "dsEmp": {
+      "0": { "ver": 8 },
+      "3": { "empNo": "E1003", "ver": 1 }
+    }
+  }
+}

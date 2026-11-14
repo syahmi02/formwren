@@ -1,0 +1,224 @@
+{
+  "about": "DSX/1 golden vectors. Each vector is <name>.request.json plus <name>.response.json, unless the entry names other files. The client tests prove the request is what the client sends. The server conformance test sends each request with conformance=true to a fresh database in the `world` below, after applying `prepare`, and checks the HTTP status and the response, then the tables against `after`.",
+  "rules": [
+    "Replace txId with any value before comparing. The server never reads it for anything but logs.",
+    "The HTTP status must equal `http` exactly.",
+    "Compare status.ok and status.code exactly. Never compare status.message or any errors[].message, which are for people.",
+    "Compare errors[] as a set of {dataset, id, column, code}, where an omitted column means the server must not send one, so a conflict names a row and not a column. No other row may be named.",
+    "Compare params, datasets and applied exactly, as JSON values. Decimals, dates and datetimes are exact text, empty string and null are different, and ints are plain numbers.",
+    "A response with no `datasets`, `params` or `applied` key means the server sends none, or an empty one.",
+    "`after` is the full content of each listed table, in primary-key order, as the columns are listed in `world`. A failed request must leave every table as `prepare` left it, because the transaction rolls back.",
+    "Vectors with conformance=false test the client only, and the server isn't run on them."
+  ],
+  "world": {
+    "tables": {
+      "emp": {
+        "columns": ["empNo TEXT primary key, generated", "empName TEXT required size 50", "salary decimal(12,0) as TEXT, optional", "ver INTEGER, the version column"],
+        "seed": [
+          ["E0999", "Seojun Park", "3900000", 3],
+          ["E1001", "Minju Kim", "5200000", 7],
+          ["E1002", "Ara Cho", "4000000", 1]
+        ]
+      },
+      "dept": {
+        "columns": ["deptCode TEXT primary key, generated", "deptName TEXT required size 30"],
+        "seed": [
+          ["D010", "Sales"],
+          ["D020", "Ops"]
+        ]
+      },
+      "qa_types": {
+        "columns": ["id INTEGER primary key", "amount decimal(30,10) as TEXT", "day date as TEXT", "stamp datetime as TEXT", "note TEXT size 40", "count INTEGER"],
+        "seed": []
+      }
+    },
+    "services": {
+      "hr.emp.save": "tableService on emp. Input dsEmp (empNo key, empName, salary, ver version). Param deptCode is accepted and ignored. Output param saved is the number of changes written, as a number. An insert sets the version to 1 and an update adds 1.",
+      "hr.org.save": "Inputs dsEmp (as above) then dsDept, applied in that order. No params.",
+      "hr.dept.save": "tableService on dept. Input dsDept (deptCode key, deptName). It has no version column, so a conflict is checked on every loaded column.",
+      "hr.emp.search": "Not used by a conformance vector.",
+      "qa.types.save": "tableService on qa_types. Input dsT (id key and not generated, amount, day, stamp, note, count). No version column.",
+      "qa.types.list": "Output dsT with those columns, every row ordered by id. No inputs.",
+      "hr.nope.save": "Does not exist."
+    },
+    "generators": "A generated key comes from a sequence the test sets up: emp starts at E1003 and adds 1, dept starts at D030 and adds 10. Keys are assigned in the order the inserts are written, which is the order of ids in the request."
+  },
+  "vectors": {
+    "search-emp": {
+      "http": 200,
+      "conformance": false,
+      "service": "hr.emp.search",
+      "note": "200. Client only: the response has reordered columns, an extra column and a missing one, which a real server wouldn't send."
+    },
+    "save-emp-changed": {
+      "http": 200,
+      "conformance": true,
+      "service": "hr.emp.save",
+      "note": "200. Update with a version column: ver 7 is checked and becomes 8, and applied returns it. A delete (ver 3 checked), and an insert whose key E1003 and ver 1 are returned in applied.",
+      "after": {
+        "emp": [
+          ["E1001", "Minji Kim", "5200000", 8],
+          ["E1002", "Ara Cho", "4000000", 1],
+          ["E1003", "Jun Lee", "4100000", 1]
+        ]
+      }
+    },
+    "save-emp-conflict": {
+      "http": 409,
+      "conformance": true,
+      "service": "hr.emp.save",
+      "note": "409 conflict on a version column. prepare sets E1002 to ver 2 and name Ara Choi, so the update of E1002 (sent with ver 1) hits zero rows. The first change, a valid update of E1001, rolls back. The one row error names row 2 and no column.",
+      "prepare": [{ "table": "emp", "where": { "empNo": "E1002" }, "set": { "ver": 2, "empName": "Ara Choi" } }],
+      "after": {
+        "emp": [
+          ["E0999", "Seojun Park", "3900000", 3],
+          ["E1001", "Minju Kim", "5200000", 7],
+          ["E1002", "Ara Choi", "4000000", 2]
+        ]
+      }
+    },
+    "dept-conflict-all-columns": {
+      "http": 409,
+      "conformance": true,
+      "service": "hr.dept.save",
+      "note": "409 conflict with no version column, so every loaded column is checked. prepare changes D010's name to Sales North, so the update of D010 (original name Sales) hits zero rows. The valid update of D020 rolls back. The one row error names row 0 and no column.",
+      "prepare": [{ "table": "dept", "where": { "deptCode": "D010" }, "set": { "deptName": "Sales North" } }],
+      "after": {
+        "dept": [
+          ["D010", "Sales North"],
+          ["D020", "Ops"]
+        ]
+      }
+    },
+    "insert-generated-key": {
+      "http": 200,
+      "conformance": true,
+      "service": "hr.dept.save",
+      "note": "200. Two inserts with a null key. The server assigns D030 then D040, in id order, and returns them in applied by client row id.",
+      "after": {
+        "dept": [
+          ["D010", "Sales"],
+          ["D020", "Ops"],
+          ["D030", "Legal"],
+          ["D040", "Finance"]
+        ]
+      }
+    },
+    "save-two-datasets": {
+      "http": 200,
+      "conformance": true,
+      "service": "hr.org.save",
+      "note": "200. Two Datasets in one transaction: an update with a version (ver 8 in applied), then a delete and an insert with a generated key (D030 in applied).",
+      "after": {
+        "emp": [
+          ["E0999", "Seojun Park", "3900000", 3],
+          ["E1001", "Minji Kim", "5200000", 8],
+          ["E1002", "Ara Cho", "4000000", 1]
+        ],
+        "dept": [
+          ["D010", "Sales"],
+          ["D030", "HR"]
+        ]
+      }
+    },
+    "save-emp-invalid": {
+      "http": 422,
+      "conformance": true,
+      "service": "hr.emp.save",
+      "note": "422 invalid. Row 3 has no name (required) and a fraction in a scale-0 decimal (scale). Both are reported, in column order, before anything is written, so the valid update of row 0 isn't applied either.",
+      "after": {
+        "emp": [
+          ["E0999", "Seojun Park", "3900000", 3],
+          ["E1001", "Minju Kim", "5200000", 7],
+          ["E1002", "Ara Cho", "4000000", 1]
+        ]
+      }
+    },
+    "unknown-service": {
+      "http": 404,
+      "conformance": true,
+      "service": "hr.nope.save",
+      "note": "404 unknown-service. The body is valid DSX for a service that doesn't exist."
+    },
+    "unknown-column": {
+      "http": 400,
+      "conformance": true,
+      "service": "hr.emp.save",
+      "note": "400 bad-request. The request names a column bonus that the service doesn't declare, so it is rejected before any work and nothing is written.",
+      "after": {
+        "emp": [
+          ["E0999", "Seojun Park", "3900000", 3],
+          ["E1001", "Minju Kim", "5200000", 7],
+          ["E1002", "Ara Cho", "4000000", 1]
+        ]
+      }
+    },
+    "malformed-structure": {
+      "http": 400,
+      "conformance": true,
+      "service": "hr.emp.save",
+      "note": "400 bad-request. Valid JSON that isn't valid DSX: a change with s X, and a value row of the wrong width. Nothing is written.",
+      "after": {
+        "emp": [
+          ["E0999", "Seojun Park", "3900000", 3],
+          ["E1001", "Minju Kim", "5200000", 7],
+          ["E1002", "Ara Cho", "4000000", 1]
+        ]
+      }
+    },
+    "not-json": {
+      "http": 400,
+      "conformance": true,
+      "service": "hr.emp.save",
+      "request": "not-json.request.txt",
+      "note": "400 bad-request. The body is not JSON at all and is sent as text with content-type application/json. The service id is in the URL.",
+      "after": {
+        "emp": [
+          ["E0999", "Seojun Park", "3900000", 3],
+          ["E1001", "Minju Kim", "5200000", 7],
+          ["E1002", "Ara Cho", "4000000", 1]
+        ]
+      }
+    },
+    "p4-types-save": {
+      "http": 200,
+      "conformance": true,
+      "service": "qa.types.save",
+      "note": "200. Three inserts into an empty qa_types: a 30-digit decimal, a leap day, microseconds, an empty string, ints at both safe limits, a decimal with a trailing zero, a datetime with .000, and padded text. All of it must be stored and read back as exactly the same text.",
+      "after": {
+        "qa_types": [
+          [1, "12345678901234567890.1234567890", "2024-02-29", "2024-02-29T23:59:59.123456", "", 9007199254740991],
+          [2, "-0.0000000001", "1999-12-31", "2000-01-01T00:00:00.000", null, -9007199254740991],
+          [3, "0.10", null, null, " padded ", 0]
+        ]
+      }
+    },
+    "p4-types-update": {
+      "http": 200,
+      "conformance": true,
+      "service": "qa.types.save",
+      "note": "200. qa_types starts as the after of p4-types-save. Row 1's note goes from empty string to null, and row 2's from null to empty string. The all-columns check must match the long decimal and the empty string by exact text, and null by IS NULL.",
+      "prepare": [{ "table": "qa_types", "rows": "the after of p4-types-save" }],
+      "after": {
+        "qa_types": [
+          [1, "12345678901234567890.1234567890", "2024-02-29", "2024-02-29T23:59:59.123456", null, 9007199254740991],
+          [2, "-0.0000000001", "1999-12-31", "2000-01-01T00:00:00.000", "", -9007199254740991],
+          [3, "0.10", null, null, " padded ", 0]
+        ]
+      }
+    },
+    "p4-types-load": {
+      "http": 200,
+      "conformance": true,
+      "service": "qa.types.list",
+      "note": "200. qa_types starts as the after of p4-types-save. The response returns it exactly: text values unchanged, '' and null kept apart, and ints as plain numbers at the safe limits.",
+      "prepare": [{ "table": "qa_types", "rows": "the after of p4-types-save" }]
+    },
+    "replace-emp-conflict": {
+      "http": 409,
+      "conformance": false,
+      "service": "hr.emp.replace",
+      "note": "409 conflict. Client only: sends all rows (rows and ids, no changes). It proves the error's row id is a client id and not a position. tableService has no whole-set replace."
+    }
+  }
+}

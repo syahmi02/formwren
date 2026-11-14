@@ -1,0 +1,8 @@
+Formwren
+Copyright 2026 The project authors
+
+This product is licensed under the Apache License, Version 2.0.
+See the LICENSE file for the full text.
+
+The Visual Studio Code extension in apps/vscode bundles third-party
+software under their own licences. See apps/vscode/THIRD_PARTY_NOTICES.md.

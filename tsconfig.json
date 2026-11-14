@@ -1,0 +1,21 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2023"],
+    "types": ["node"]
+  },
+  "include": [
+    "packages/core/src",
+    "packages/core/test",
+    "packages/core/bench",
+    "packages/format/src",
+    "packages/format/test",
+    "packages/cli/src",
+    "packages/cli/test",
+    "packages/server/src",
+    "packages/server/test",
+    "apps/demo/server",
+    "scripts",
+    "*.ts"
+  ]
+}

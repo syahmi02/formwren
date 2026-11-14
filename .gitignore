@@ -1,0 +1,27 @@
+node_modules/
+dist/
+coverage/
+*.form.gen.ts
+*.log
+*.tsbuildinfo
+test-results/
+playwright-report/
+apps/demo/e2e/.output/
+packages/designer/e2e/.output/
+
+# Private notes and third-party agent prompts. See docs/FRAMEWORK.md §10.
+docs/research/
+.claude/
+
+# Demo database
+apps/demo/.data/
+
+# Test copy of VS Code for extension tests
+.vscode-test/
+
+# Packaged VS Code extension
+*.vsix
+
+# Licence files copied in only while packaging the VS Code extension
+apps/vscode/LICENSE
+apps/vscode/NOTICE

@@ -1,0 +1,11 @@
+html,
+body {
+  margin: 0;
+  background: var(--fw-color-canvas);
+  /* The designer draws everything interactive over this page, so it never takes pointer input. */
+  pointer-events: none;
+  user-select: none;
+}
+body {
+  overflow: hidden;
+}

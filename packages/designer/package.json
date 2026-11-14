@@ -1,0 +1,18 @@
+{
+  "name": "@fw/designer",
+  "version": "0.0.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./contract": "./src/contract.ts"
+  },
+  "dependencies": {
+    "@fw/components": "workspace:*",
+    "@fw/core": "workspace:*",
+    "@fw/format": "workspace:*",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  }
+}

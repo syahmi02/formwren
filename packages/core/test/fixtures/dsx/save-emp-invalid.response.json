@@ -1,0 +1,23 @@
+{
+  "status": {
+    "ok": false,
+    "code": "invalid",
+    "message": "Some rows are not valid"
+  },
+  "errors": [
+    {
+      "dataset": "dsEmp",
+      "id": 3,
+      "column": "empName",
+      "code": "required",
+      "message": "A name is required"
+    },
+    {
+      "dataset": "dsEmp",
+      "id": 3,
+      "column": "salary",
+      "code": "scale",
+      "message": "Salary can have no decimal places"
+    }
+  ]
+}

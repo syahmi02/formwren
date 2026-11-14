@@ -1,0 +1,228 @@
+{
+  "formatVersion": 1,
+  "id": "hr.DepartmentEmployees",
+  "title": "Departments and employees",
+  "script": "./DepartmentEmployees.form.ts",
+  "size": { "width": 1200, "height": 720 },
+  "events": { "init": "onInit" },
+  "datasets": [
+    {
+      "id": "dsDept",
+      "keys": ["code"],
+      "confirmUnsaved": true,
+      "columns": [
+        { "id": "code", "type": "string", "label": "Code", "size": 10, "required": true },
+        { "id": "name", "type": "string", "label": "Name", "size": 50, "required": true },
+        { "id": "ver", "type": "int", "version": true }
+      ],
+      "sampleRows": [
+        { "code": "ENG", "name": "Engineering", "ver": 1 },
+        { "code": "SAL", "name": "Sales", "ver": 1 }
+      ]
+    },
+    {
+      "id": "dsEmp",
+      "keys": ["empNo"],
+      "confirmUnsaved": true,
+      "columns": [
+        { "id": "empNo", "type": "string", "label": "No", "size": 10 },
+        { "id": "empName", "type": "string", "label": "Name", "size": 50, "required": true },
+        { "id": "dept", "type": "string", "size": 10 },
+        { "id": "level", "type": "string", "size": 1 },
+        { "id": "active", "type": "boolean" },
+        { "id": "salary", "type": "decimal", "label": "Salary", "precision": 14, "scale": 6 },
+        { "id": "hiredOn", "type": "date" },
+        { "id": "ver", "type": "int", "version": true }
+      ],
+      "sampleRows": [
+        { "empNo": "E001", "empName": "Alice Carter", "dept": "ENG", "level": "B", "active": true, "salary": "72000.123456", "hiredOn": "2019-03-04", "ver": 1 }
+      ]
+    }
+  ],
+  "components": [
+    {
+      "id": "addDeptButton",
+      "type": "Button",
+      "layout": { "left": 16, "top": 16, "width": 104, "height": 28 },
+      "props": { "text": "Add department", "disabled": "=vars.busy || vars.loadingData" },
+      "events": { "click": "onAddDept" }
+    },
+    {
+      "id": "deleteDeptButton",
+      "type": "Button",
+      "layout": { "left": 128, "top": 16, "width": 120, "height": 28 },
+      "props": { "text": "Delete department", "disabled": "=vars.busy || vars.loadingData || ds.dsDept.$rowCount == 0" },
+      "events": { "click": "onDeleteDept" }
+    },
+    {
+      "id": "addEmpButton",
+      "type": "Button",
+      "layout": { "left": 432, "top": 16, "width": 104, "height": 28 },
+      "props": { "text": "Add employee", "disabled": "=vars.busy || vars.loadingData || ds.dsDept.$rowCount == 0" },
+      "events": { "click": "onAddEmp" }
+    },
+    {
+      "id": "deleteEmpButton",
+      "type": "Button",
+      "layout": { "left": 544, "top": 16, "width": 120, "height": 28 },
+      "props": { "text": "Delete employee", "disabled": "=vars.busy || vars.loadingData || ds.dsEmp.$rowCount == 0" },
+      "events": { "click": "onDeleteEmp" }
+    },
+    {
+      "id": "deptGrid",
+      "type": "Grid",
+      "layout": { "left": 16, "top": 52, "width": 400, "bottom": 60 },
+      "props": {
+        "columns": [
+          { "id": "status", "width": 40 },
+          { "id": "select", "width": 40 },
+          { "id": "code", "width": 100 },
+          { "id": "name", "width": 200 }
+        ],
+        "headerRows": [
+          {
+            "cells": [
+              { "text": "" },
+              { "text": "" },
+              { "text": "Code" },
+              { "text": "Department" }
+            ]
+          }
+        ],
+        "recordRows": [
+          {
+            "cells": [
+              { "kind": "rowStatus" },
+              { "kind": "rowSelect" },
+              { "field": "code", "editor": "text" },
+              { "field": "name", "editor": "text" }
+            ]
+          }
+        ]
+      },
+      "bind": { "dataset": "dsDept" }
+    },
+    {
+      "id": "empGrid",
+      "type": "Grid",
+      "layout": { "left": 432, "top": 52, "right": 16, "height": 300 },
+      "props": {
+        "columns": [
+          { "id": "status", "width": 40 },
+          { "id": "select", "width": 40 },
+          { "id": "empNo", "width": 80 },
+          { "id": "empName", "width": 190 },
+          { "id": "level", "width": 100 },
+          { "id": "active", "width": 70 },
+          { "id": "salary", "width": 130 },
+          { "id": "hiredOn", "width": 110 }
+        ],
+        "headerRows": [
+          {
+            "cells": [
+              { "text": "" },
+              { "text": "" },
+              { "text": "No" },
+              { "text": "Name" },
+              { "text": "Level" },
+              { "text": "Active" },
+              { "text": "Salary" },
+              { "text": "Hired on" }
+            ]
+          }
+        ],
+        "recordRows": [
+          {
+            "cells": [
+              { "kind": "rowStatus" },
+              { "kind": "rowSelect" },
+              { "field": "empNo" },
+              { "field": "empName", "editor": "text" },
+              {
+                "field": "level",
+                "editor": "dropdown",
+                "options": [
+                  { "value": "A", "label": "Junior" },
+                  { "value": "B", "label": "Senior" },
+                  { "value": "C", "label": "Lead" }
+                ]
+              },
+              { "field": "active", "editor": "checkbox" },
+              { "field": "salary", "editor": "number", "format": "#,##0.00" },
+              { "field": "hiredOn", "editor": "date", "format": "MM/dd/yyyy" }
+            ]
+          }
+        ]
+      },
+      "bind": { "dataset": "dsEmp" }
+    },
+    {
+      "id": "empForm",
+      "type": "Panel",
+      "layout": { "left": 432, "top": 364, "right": 16, "bottom": 60 },
+      "props": { "title": "Selected employee" },
+      "children": [
+        {
+          "id": "nameInput",
+          "type": "TextInput",
+          "layout": { "left": 8, "top": 0, "width": 240, "height": 52 },
+          "props": { "label": "Name" },
+          "bind": { "value": "dsEmp.empName" }
+        },
+        {
+          "id": "salaryInput",
+          "type": "NumberInput",
+          "layout": { "left": 264, "top": 0, "width": 180, "height": 52 },
+          "props": { "label": "Salary" },
+          "bind": { "value": "dsEmp.salary" }
+        },
+        {
+          "id": "hiredOnInput",
+          "type": "DatePicker",
+          "layout": { "left": 460, "top": 0, "width": 180, "height": 52 },
+          "props": { "label": "Hired on" },
+          "bind": { "value": "dsEmp.hiredOn" }
+        },
+        {
+          "id": "levelRadio",
+          "type": "RadioGroup",
+          "layout": { "left": 8, "top": 68, "width": 376, "height": 52 },
+          "props": { "label": "Level", "orientation": "horizontal", "options": [{ "value": "A", "label": "Junior" }, { "value": "B", "label": "Senior" }, { "value": "C", "label": "Lead" }] },
+          "bind": { "value": "dsEmp.level" }
+        },
+        {
+          "id": "activeCheck",
+          "type": "Checkbox",
+          "layout": { "left": 400, "top": 84, "width": 160, "height": 24 },
+          "props": { "label": "Active" },
+          "bind": { "value": "dsEmp.active" }
+        }
+      ]
+    },
+    {
+      "id": "saveButton",
+      "type": "Button",
+      "layout": { "left": 16, "bottom": 16, "width": 88, "height": 28 },
+      "props": { "text": "Save", "variant": "primary", "disabled": "=vars.busy || vars.loadingData" },
+      "events": { "click": "onSave" }
+    },
+    {
+      "id": "revertButton",
+      "type": "Button",
+      "layout": { "left": 112, "bottom": 16, "width": 88, "height": 28 },
+      "props": { "text": "Revert", "disabled": "=vars.busy || vars.loadingData" },
+      "events": { "click": "onRevert" }
+    },
+    {
+      "id": "statusLabel",
+      "type": "Label",
+      "layout": { "left": 216, "bottom": 16, "right": 16, "height": 28 },
+      "props": { "text": "=vars.message", "align": "right", "live": true }
+    }
+  ],
+  "variables": {
+    "busy": { "type": "boolean", "default": false },
+    "loadingData": { "type": "boolean", "default": false },
+    "message": { "type": "string", "default": "" }
+  }
+}

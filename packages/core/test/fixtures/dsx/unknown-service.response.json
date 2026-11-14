@@ -1,0 +1,7 @@
+{
+  "status": {
+    "ok": false,
+    "code": "unknown-service",
+    "message": "There is no service hr.nope.save"
+  }
+}

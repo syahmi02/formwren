@@ -1,0 +1,7 @@
+packages:
+  - "packages/*"
+  - "apps/*"
+
+# esbuild's install script only verifies its binary, and the tools run fine without it.
+ignoredBuiltDependencies:
+  - esbuild

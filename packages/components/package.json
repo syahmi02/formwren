@@ -1,0 +1,23 @@
+{
+  "name": "@fw/components",
+  "version": "0.0.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./meta": "./src/meta/index.ts",
+    "./theme.css": "./src/theme/index.css"
+  },
+  "dependencies": {
+    "@fw/core": "workspace:*",
+    "@fw/grid": "workspace:*",
+    "@internationalized/date": "^3.12.4",
+    "react": "^19.3.1",
+    "react-aria-components": "^1.22.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@preact/signals-core": "^1.14.5"
+  }
+}

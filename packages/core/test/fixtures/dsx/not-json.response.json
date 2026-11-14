@@ -1,0 +1,7 @@
+{
+  "status": {
+    "ok": false,
+    "code": "bad-request",
+    "message": "The body is not JSON"
+  }
+}

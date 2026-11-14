@@ -1,0 +1,49 @@
+{
+  "name": "fw-platform",
+  "private": true,
+  "license": "Apache-2.0",
+  "type": "module",
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "check": "pnpm typecheck && pnpm lint && pnpm test",
+    "typecheck": "pnpm --filter demo exec fw check --no-tsc && tsc --noEmit && tsc --noEmit -p packages/grid && tsc --noEmit -p packages/components && tsc --noEmit -p packages/designer && tsc --noEmit -p packages/designer/e2e && tsc --noEmit -p apps/vscode && tsc --noEmit -p apps/demo && tsc --noEmit -p apps/demo/e2e",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "bench": "vitest run --config vitest.bench.config.ts",
+    "fw": "fw",
+    "e2e": "playwright test",
+    "e2e:designer": "playwright test -c packages/designer/playwright.config.ts",
+    "demo": "node apps/demo/scripts/demo.ts",
+    "demo:reset": "node apps/demo/scripts/demo.ts --reset",
+    "vscode:build": "node apps/vscode/scripts/build.ts",
+    "vscode:package": "node apps/vscode/scripts/package.ts",
+    "vscode:install": "node apps/vscode/scripts/install.ts",
+    "vscode:test": "node apps/vscode/scripts/test.ts",
+    "export:public": "node scripts/export-public.ts"
+  },
+  "devDependencies": {
+    "@fw/cli": "workspace:*",
+    "@playwright/test": "^1.65.0",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.8",
+    "@types/node": "^22.20.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/vscode": "~1.146.0",
+    "@vscode/test-electron": "^3.1.0",
+    "@vscode/vsce": "^4.1.1",
+    "eslint": "^10.14.0",
+    "jsdom": "^31.0.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.1",
+    "vite": "^8.3.6",
+    "vitest": "^5.1.0"
+  }
+}

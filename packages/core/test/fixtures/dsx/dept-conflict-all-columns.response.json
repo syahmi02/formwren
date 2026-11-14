@@ -1,0 +1,15 @@
+{
+  "status": {
+    "ok": false,
+    "code": "conflict",
+    "message": "Changed by someone else"
+  },
+  "errors": [
+    {
+      "dataset": "dsDept",
+      "id": 0,
+      "code": "conflict",
+      "message": "Row 0 was changed by someone else"
+    }
+  ]
+}

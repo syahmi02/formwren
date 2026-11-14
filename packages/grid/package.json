@@ -1,0 +1,15 @@
+{
+  "name": "@fw/grid",
+  "version": "0.0.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@fw/core": "workspace:*",
+    "@preact/signals-core": "^1.14.5",
+    "@tanstack/virtual-core": "^3.19.11"
+  }
+}

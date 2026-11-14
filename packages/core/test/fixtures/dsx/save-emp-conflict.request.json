@@ -1,0 +1,61 @@
+{
+  "dsx": 1,
+  "txId": "TX",
+  "service": "hr.emp.save",
+  "datasets": {
+    "dsEmp": {
+      "columns": [
+        {
+          "id": "empNo",
+          "type": "string",
+          "size": 10,
+          "key": true
+        },
+        {
+          "id": "empName",
+          "type": "string",
+          "size": 50
+        },
+        {
+          "id": "salary",
+          "type": "decimal",
+          "precision": 12,
+          "scale": 0
+        },
+        {
+          "id": "ver",
+          "type": "int",
+          "version": true
+        }
+      ],
+      "changes": [
+        {
+          "s": "U",
+          "id": 0,
+          "v": [
+            "E1001",
+            "Minji Kim",
+            "5200000",
+            7
+          ],
+          "o": {
+            "1": "Minju Kim"
+          }
+        },
+        {
+          "s": "U",
+          "id": 2,
+          "v": [
+            "E1002",
+            "Ara C.",
+            "4000000",
+            1
+          ],
+          "o": {
+            "1": "Ara Cho"
+          }
+        }
+      ]
+    }
+  }
+}

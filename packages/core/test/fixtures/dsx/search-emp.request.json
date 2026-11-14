@@ -1,0 +1,8 @@
+{
+  "dsx": 1,
+  "txId": "TX",
+  "service": "hr.emp.search",
+  "params": {
+    "deptCode": "D010"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "status": {
+    "ok": true
+  },
+  "applied": {
+    "dsEmp": {
+      "0": {
+        "ver": 8
+      }
+    },
+    "dsDept": {
+      "2": {
+        "deptCode": "D030"
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "dsx": 1,
+  "txId": "TX",
+  "service": "hr.dept.save",
+  "datasets": {
+    "dsDept": {
+      "columns": [
+        {
+          "id": "deptCode",
+          "type": "string",
+          "size": 4,
+          "key": true
+        },
+        {
+          "id": "deptName",
+          "type": "string",
+          "size": 30
+        }
+      ],
+      "changes": [
+        {
+          "s": "I",
+          "id": 2,
+          "v": [
+            null,
+            "Legal"
+          ]
+        },
+        {
+          "s": "I",
+          "id": 3,
+          "v": [
+            null,
+            "Finance"
+          ]
+        }
+      ]
+    }
+  }
+}

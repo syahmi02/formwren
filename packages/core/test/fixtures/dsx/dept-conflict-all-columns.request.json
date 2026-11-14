@@ -1,0 +1,46 @@
+{
+  "dsx": 1,
+  "txId": "TX",
+  "service": "hr.dept.save",
+  "datasets": {
+    "dsDept": {
+      "columns": [
+        {
+          "id": "deptCode",
+          "type": "string",
+          "size": 4,
+          "key": true
+        },
+        {
+          "id": "deptName",
+          "type": "string",
+          "size": 30
+        }
+      ],
+      "changes": [
+        {
+          "s": "U",
+          "id": 0,
+          "v": [
+            "D010",
+            "Sales EU"
+          ],
+          "o": {
+            "1": "Sales"
+          }
+        },
+        {
+          "s": "U",
+          "id": 1,
+          "v": [
+            "D020",
+            "Ops EU"
+          ],
+          "o": {
+            "1": "Ops"
+          }
+        }
+      ]
+    }
+  }
+}

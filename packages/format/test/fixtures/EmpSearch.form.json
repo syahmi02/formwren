@@ -1,0 +1,95 @@
+{
+  "formatVersion": 1,
+  "id": "hr.EmpSearch",
+  "title": "Employee search",
+  "script": "./EmpSearch.form.ts",
+  "size": { "width": 1024, "height": 640 },
+  "params": {
+    "deptCode": { "type": "string" }
+  },
+  "events": { "init": "onInit" },
+  "datasets": [
+    {
+      "id": "dsCond",
+      "columns": [
+        { "id": "deptCode", "type": "string", "size": 10 },
+        { "id": "empName", "type": "string", "size": 50 }
+      ],
+      "initialRows": [{}]
+    },
+    {
+      "id": "dsEmp",
+      "keys": ["empNo"],
+      "confirmUnsaved": true,
+      "columns": [
+        { "id": "empNo", "type": "string", "size": 10 },
+        { "id": "empName", "type": "string", "size": 50 },
+        { "id": "salary", "type": "decimal", "precision": 12, "scale": 0 },
+        { "id": "hiredOn", "type": "date" }
+      ]
+    }
+  ],
+  "components": [
+    {
+      "id": "empNameInput",
+      "type": "TextInput",
+      "layout": { "left": 16, "top": 16, "width": 200, "height": 28 },
+      "props": { "label": "Name", "maxLength": 50 },
+      "bind": { "value": "dsCond.empName" }
+    },
+    {
+      "id": "searchButton",
+      "type": "Button",
+      "layout": { "left": 232, "top": 16, "width": 80, "height": 28 },
+      "props": { "text": "Search", "disabled": "=vars.busy" },
+      "events": { "click": "onSearch" }
+    },
+    {
+      "id": "empGrid",
+      "type": "Grid",
+      "layout": { "left": 16, "top": 56, "right": 16, "bottom": 16 },
+      "props": {
+        "columns": [
+          { "id": "c1", "width": 90 },
+          { "id": "c2", "width": 160 },
+          { "id": "c3", "width": 120 }
+        ],
+        "headerRows": [
+          {
+            "cells": [
+              { "text": "Employee", "colSpan": 2 },
+              { "text": "Salary", "rowSpan": 2 }
+            ]
+          },
+          {
+            "cells": [
+              { "text": "No" },
+              { "text": "Name" }
+            ]
+          }
+        ],
+        "recordRows": [
+          {
+            "cells": [
+              { "field": "empNo" },
+              { "field": "empName", "editor": "text" },
+              { "field": "salary", "format": "#,##0" }
+            ]
+          }
+        ],
+        "footerRows": [
+          {
+            "cells": [
+              { "text": "Total", "colSpan": 2 },
+              { "value": "=sum(salary)", "format": "#,##0" }
+            ]
+          }
+        ]
+      },
+      "bind": { "dataset": "dsEmp" }
+    }
+  ],
+  "variables": {
+    "busy": { "type": "boolean", "default": false }
+  }
+}

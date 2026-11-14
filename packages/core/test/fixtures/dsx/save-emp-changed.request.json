@@ -1,0 +1,71 @@
+{
+  "dsx": 1,
+  "txId": "TX",
+  "service": "hr.emp.save",
+  "params": {
+    "deptCode": "D010"
+  },
+  "datasets": {
+    "dsEmp": {
+      "columns": [
+        {
+          "id": "empNo",
+          "type": "string",
+          "size": 10,
+          "key": true
+        },
+        {
+          "id": "empName",
+          "type": "string",
+          "size": 50
+        },
+        {
+          "id": "salary",
+          "type": "decimal",
+          "precision": 12,
+          "scale": 0
+        },
+        {
+          "id": "ver",
+          "type": "int",
+          "version": true
+        }
+      ],
+      "changes": [
+        {
+          "s": "U",
+          "id": 0,
+          "v": [
+            "E1001",
+            "Minji Kim",
+            "5200000",
+            7
+          ],
+          "o": {
+            "1": "Minju Kim"
+          }
+        },
+        {
+          "s": "D",
+          "id": 1,
+          "v": [
+            "E0999",
+            "Seojun Park",
+            "3900000",
+            3
+          ]
+        },
+        {
+          "s": "I",
+          "id": 3,
+          "v": [
+            null,
+            "Jun Lee",
+            "4100000",
+            null
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "dsx": 1,
+  "txId": "TX",
+  "service": "hr.emp.replace",
+  "datasets": {
+    "dsEmp": {
+      "columns": [
+        {
+          "id": "empNo",
+          "type": "string",
+          "size": 10,
+          "key": true
+        },
+        {
+          "id": "empName",
+          "type": "string",
+          "size": 50
+        },
+        {
+          "id": "salary",
+          "type": "decimal",
+          "precision": 12,
+          "scale": 0
+        },
+        {
+          "id": "ver",
+          "type": "int",
+          "version": true
+        }
+      ],
+      "rows": [
+        [
+          "E0999",
+          "Seojun Park",
+          "3900000",
+          3
+        ],
+        [
+          "E1002",
+          "Ara Cho",
+          "4000000",
+          1
+        ]
+      ],
+      "ids": [
+        1,
+        2
+      ]
+    }
+  }
+}

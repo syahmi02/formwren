@@ -1,0 +1,18 @@
+{
+  "status": { "ok": true },
+  "params": { "total": 2 },
+  "datasets": {
+    "dsEmp": {
+      "columns": [
+        { "id": "salary", "type": "decimal", "precision": 12, "scale": 0 },
+        { "id": "empNo", "type": "string", "size": 10, "key": true },
+        { "id": "note", "type": "string" },
+        { "id": "empName", "type": "string", "size": 50 }
+      ],
+      "rows": [
+        ["5200000", "E1001", "ignored", "Minju Kim"],
+        ["3900000", "E0999", null, "Seojun Park"]
+      ]
+    }
+  }
+}

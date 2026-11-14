@@ -1,0 +1,110 @@
+{
+  "formatVersion": 1,
+  "id": "hr.EmployeeLookup",
+  "title": "Find employee",
+  "script": "./EmployeeLookup.form.ts",
+  "size": { "width": 560, "height": 420 },
+  "params": {
+    "keyword": { "type": "string" }
+  },
+  "result": {
+    "empNo": { "type": "string" },
+    "empName": { "type": "string" }
+  },
+  "events": { "init": "onInit" },
+  "datasets": [
+    {
+      "id": "dsCond",
+      "columns": [
+        { "id": "keyword", "type": "string", "size": 50 }
+      ],
+      "initialRows": [{}]
+    },
+    {
+      "id": "dsEmp",
+      "keys": ["empNo"],
+      "columns": [
+        { "id": "empNo", "type": "string", "label": "No", "size": 10 },
+        { "id": "empName", "type": "string", "label": "Name", "size": 50 },
+        { "id": "dept", "type": "string", "label": "Department", "size": 10 }
+      ],
+      "sampleRows": [
+        { "empNo": "E001", "empName": "Alice Carter", "dept": "ENG" },
+        { "empNo": "E002", "empName": "Benjamin Hughes", "dept": "SAL" }
+      ]
+    }
+  ],
+  "components": [
+    {
+      "id": "keywordInput",
+      "type": "TextInput",
+      "layout": { "left": 16, "top": 16, "width": 360, "height": 52 },
+      "props": { "label": "Number starts with, or name contains" },
+      "bind": { "value": "dsCond.keyword" },
+      "events": { "submit": "onSearch" }
+    },
+    {
+      "id": "searchButton",
+      "type": "Button",
+      "layout": { "left": 388, "top": 40, "width": 88, "height": 28 },
+      "props": { "text": "Search", "variant": "primary", "disabled": "=vars.busy" },
+      "events": { "click": "onSearch" }
+    },
+    {
+      "id": "statusLabel",
+      "type": "Label",
+      "layout": { "left": 16, "top": 78, "right": 16, "height": 24 },
+      "props": { "text": "=vars.message", "live": true }
+    },
+    {
+      "id": "empGrid",
+      "type": "Grid",
+      "layout": { "left": 16, "top": 108, "right": 16, "bottom": 60 },
+      "props": {
+        "columns": [
+          { "id": "empNo", "width": 90 },
+          { "id": "empName", "width": 250 },
+          { "id": "dept", "width": 120 }
+        ],
+        "headerRows": [
+          {
+            "cells": [
+              { "text": "No" },
+              { "text": "Name" },
+              { "text": "Department" }
+            ]
+          }
+        ],
+        "recordRows": [
+          {
+            "cells": [
+              { "field": "empNo" },
+              { "field": "empName" },
+              { "field": "dept" }
+            ]
+          }
+        ]
+      },
+      "bind": { "dataset": "dsEmp" },
+      "events": { "rowDoubleClick": "onChoose", "rowActivate": "onChoose" }
+    },
+    {
+      "id": "okButton",
+      "type": "Button",
+      "layout": { "right": 112, "bottom": 16, "width": 88, "height": 28 },
+      "props": { "text": "OK", "variant": "primary", "disabled": "=vars.busy || ds.dsEmp.$rowCount == 0" },
+      "events": { "click": "onOk" }
+    },
+    {
+      "id": "cancelButton",
+      "type": "Button",
+      "layout": { "right": 16, "bottom": 16, "width": 88, "height": 28 },
+      "props": { "text": "Cancel" },
+      "events": { "click": "onCancel" }
+    }
+  ],
+  "variables": {
+    "busy": { "type": "boolean", "default": false },
+    "message": { "type": "string", "default": "" }
+  }
+}

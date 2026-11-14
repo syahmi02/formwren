@@ -1,0 +1,125 @@
+/*
+ * Theme tokens. Light is the default; dark follows prefers-color-scheme unless an ancestor
+ * says otherwise. Put data-fw-theme="light" or "dark" on <html> (or <body>) to force a theme,
+ * so portalled popups (which render under <body>) get it too.
+ */
+:root,
+[data-fw-theme='light'] {
+  color-scheme: light;
+
+  --fw-color-canvas: #f4f5f7;
+  --fw-color-surface: #ffffff;
+  --fw-color-surface-hover: #eef0f3;
+  --fw-color-surface-pressed: #e2e5ea;
+  --fw-color-surface-disabled: #eceef1;
+  --fw-color-surface-readonly: #f6f7f9;
+
+  --fw-color-text: #1f2328;
+  --fw-color-text-muted: #57606a;
+  --fw-color-text-disabled: #6e7781;
+  --fw-color-text-on-accent: #ffffff;
+
+  --fw-color-border: #c4cad2;
+  --fw-color-border-strong: #7d8691;
+
+  --fw-color-accent: #1a5fcf;
+  --fw-color-accent-hover: #164fae;
+  --fw-color-accent-pressed: #123f8a;
+  --fw-color-accent-subtle: #dbe8fb;
+
+  --fw-color-danger: #c4271a;
+  --fw-color-danger-subtle: #fdebe9;
+
+  --fw-color-overlay: rgb(20 24 30 / 0.45);
+  --fw-shadow-popup: 0 6px 20px rgb(20 24 30 / 0.18), 0 1px 3px rgb(20 24 30 / 0.2);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-fw-theme]) {
+    color-scheme: dark;
+
+    --fw-color-canvas: #1b1f24;
+    --fw-color-surface: #22272e;
+    --fw-color-surface-hover: #2b313a;
+    --fw-color-surface-pressed: #343b46;
+    --fw-color-surface-disabled: #2b313a;
+    --fw-color-surface-readonly: #1f242b;
+
+    --fw-color-text: #e6e9ed;
+    --fw-color-text-muted: #a3adb8;
+    --fw-color-text-disabled: #8b949e;
+    --fw-color-text-on-accent: #0b1b33;
+
+    --fw-color-border: #444c56;
+    --fw-color-border-strong: #7b8590;
+
+    --fw-color-accent: #6fa8ff;
+    --fw-color-accent-hover: #8bbaff;
+    --fw-color-accent-pressed: #a6cbff;
+    --fw-color-accent-subtle: #25406b;
+
+    --fw-color-danger: #ff8b80;
+    --fw-color-danger-subtle: #4a2420;
+
+    --fw-color-overlay: rgb(0 0 0 / 0.6);
+    --fw-shadow-popup: 0 6px 20px rgb(0 0 0 / 0.5), 0 1px 3px rgb(0 0 0 / 0.5);
+  }
+}
+
+[data-fw-theme='dark'] {
+  color-scheme: dark;
+
+  --fw-color-canvas: #1b1f24;
+  --fw-color-surface: #22272e;
+  --fw-color-surface-hover: #2b313a;
+  --fw-color-surface-pressed: #343b46;
+  --fw-color-surface-disabled: #2b313a;
+  --fw-color-surface-readonly: #1f242b;
+
+  --fw-color-text: #e6e9ed;
+  --fw-color-text-muted: #a3adb8;
+  --fw-color-text-disabled: #8b949e;
+  --fw-color-text-on-accent: #0b1b33;
+
+  --fw-color-border: #444c56;
+  --fw-color-border-strong: #7b8590;
+
+  --fw-color-accent: #6fa8ff;
+  --fw-color-accent-hover: #8bbaff;
+  --fw-color-accent-pressed: #a6cbff;
+  --fw-color-accent-subtle: #25406b;
+
+  --fw-color-danger: #ff8b80;
+  --fw-color-danger-subtle: #4a2420;
+
+  --fw-color-overlay: rgb(0 0 0 / 0.6);
+  --fw-shadow-popup: 0 6px 20px rgb(0 0 0 / 0.5), 0 1px 3px rgb(0 0 0 / 0.5);
+}
+
+:root {
+  --fw-font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --fw-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --fw-font-size: 13px;
+  --fw-font-size-small: 12px;
+  --fw-line-height: 18px;
+  --fw-font-weight: 400;
+  --fw-font-weight-strong: 600;
+
+  --fw-space-1: 2px;
+  --fw-space-2: 4px;
+  --fw-space-3: 8px;
+  --fw-space-4: 12px;
+  --fw-space-5: 16px;
+
+  --fw-radius: 3px;
+  --fw-radius-lg: 6px;
+
+  --fw-control-height: 28px;
+  --fw-control-padding-x: 8px;
+  --fw-panel-title-height: 24px;
+  --fw-border-width: 1px;
+
+  --fw-focus-ring-width: 2px;
+  --fw-focus-ring-offset: 1px;
+  --fw-focus-ring: var(--fw-focus-ring-width) solid var(--fw-color-accent);
+}

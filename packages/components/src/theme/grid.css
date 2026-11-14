@@ -1,0 +1,279 @@
+/*
+ * Grid. The engine writes --fw-grid-tracks, --fw-grid-width and --fw-grid-left-N on .fw-grid,
+ * so a column resize is a few style writes. Row height is the one size the engine reads from here.
+ */
+:root,
+[data-fw-theme='light'] {
+  --fw-grid-row-height: 28px;
+  --fw-grid-header-bg: #eceff3;
+  --fw-grid-footer-bg: #eceff3;
+  --fw-grid-current-bg: #e8f0fd;
+  --fw-grid-selected-bg: #dbe8fb;
+  --fw-grid-status-inserted: #1a7f37;
+  --fw-grid-status-updated: #9a6700;
+  --fw-grid-status-deleted: #c4271a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-fw-theme]) {
+    --fw-grid-header-bg: #2b313a;
+    --fw-grid-footer-bg: #2b313a;
+    --fw-grid-current-bg: #263447;
+    --fw-grid-selected-bg: #25406b;
+    --fw-grid-status-inserted: #56d364;
+    --fw-grid-status-updated: #e3b341;
+    --fw-grid-status-deleted: #ff8b80;
+  }
+}
+
+[data-fw-theme='dark'] {
+  --fw-grid-header-bg: #2b313a;
+  --fw-grid-footer-bg: #2b313a;
+  --fw-grid-current-bg: #263447;
+  --fw-grid-selected-bg: #25406b;
+  --fw-grid-status-inserted: #56d364;
+  --fw-grid-status-updated: #e3b341;
+  --fw-grid-status-deleted: #ff8b80;
+}
+
+.fw-grid {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--fw-color-border);
+  background: var(--fw-color-surface);
+  color: var(--fw-color-text);
+  font: inherit;
+  font-size: 13px;
+  line-height: 1;
+  --fw-grid-tracks: none;
+  --fw-grid-width: 0px;
+}
+
+.fw-grid:focus {
+  outline: none;
+}
+
+.fw-grid:focus-visible {
+  outline: 2px solid var(--fw-color-accent);
+  outline-offset: -2px;
+}
+
+.fw-grid__scroller {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.fw-grid__header,
+.fw-grid__footer {
+  position: sticky;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: var(--fw-grid-tracks);
+  width: var(--fw-grid-width);
+}
+
+.fw-grid__header[hidden],
+.fw-grid__footer[hidden] {
+  display: none;
+}
+
+.fw-grid__header {
+  top: 0;
+}
+
+.fw-grid__footer {
+  bottom: 0;
+}
+
+/* Section rows only carry the ARIA row role. Their cells are placed on the section's own grid. */
+.fw-grid__sectionrow {
+  display: contents;
+}
+
+.fw-grid__body {
+  position: relative;
+  width: var(--fw-grid-width);
+}
+
+/* Zero-sized, so it never covers a cell. Editors are positioned inside it from cellRect(). */
+.fw-grid__overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  /* Above the sticky footer, so an editor's message on the last visible row isn't hidden under it. */
+  z-index: 4;
+}
+
+.fw-grid__row {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: grid;
+  grid-template-columns: var(--fw-grid-tracks);
+  width: var(--fw-grid-width);
+  height: var(--fw-grid-row-height);
+}
+
+.fw-grid__cell {
+  position: relative;
+  box-sizing: border-box;
+  min-width: 0;
+  height: 100%;
+  padding: 0 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  line-height: calc(var(--fw-grid-row-height) - 1px);
+  border-right: 1px solid var(--fw-color-border);
+  border-bottom: 1px solid var(--fw-color-border);
+  background: var(--fw-color-surface);
+}
+
+.fw-grid__cell[data-align='end'] {
+  text-align: right;
+}
+
+/* Sticky cells need an opaque background and to sit above the cells that scroll under them. */
+.fw-grid__cell[data-frozen] {
+  position: sticky;
+  z-index: 1;
+}
+
+.fw-grid__cell--header,
+.fw-grid__cell--footer {
+  height: auto;
+  font-weight: 600;
+  user-select: none;
+}
+
+.fw-grid__cell--header {
+  background: var(--fw-grid-header-bg);
+  color: var(--fw-color-text);
+}
+
+.fw-grid__cell--footer {
+  background: var(--fw-grid-footer-bg);
+  text-align: right;
+}
+
+.fw-grid:not([data-design]) .fw-grid__cell--header[aria-sort] {
+  cursor: pointer;
+}
+
+.fw-grid__cell--header[aria-sort='ascending']::after,
+.fw-grid__cell--header[aria-sort='descending']::after {
+  margin-left: 6px;
+  font-size: 10px;
+  color: var(--fw-color-accent);
+}
+
+.fw-grid__cell--header[aria-sort='ascending']::after {
+  content: '\25B2';
+}
+
+.fw-grid__cell--header[aria-sort='descending']::after {
+  content: '\25BC';
+}
+
+/* Drag handle on a header cell's right edge. The label keeps its own padding clear of it. */
+.fw-grid__cell--header {
+  padding-right: 10px;
+}
+
+.fw-grid__resize {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 8px;
+  cursor: col-resize;
+  touch-action: none;
+}
+
+.fw-grid__resize:hover,
+.fw-grid__resize:focus-visible,
+.fw-grid[data-resizing] .fw-grid__resize:active {
+  background: var(--fw-color-accent-subtle);
+  box-shadow: inset -2px 0 0 var(--fw-color-accent);
+  outline: none;
+}
+
+.fw-grid[data-resizing] {
+  cursor: col-resize;
+  user-select: none;
+}
+
+/* Row state. Cells carry their own backgrounds, so the row state is passed down to them. */
+.fw-grid__row[data-current] > .fw-grid__cell {
+  background: var(--fw-grid-current-bg);
+}
+
+.fw-grid__row[data-selected] > .fw-grid__cell {
+  background: var(--fw-grid-selected-bg);
+}
+
+.fw-grid__row[data-status='deleted'] > .fw-grid__cell {
+  color: var(--fw-color-text-muted);
+  text-decoration: line-through;
+}
+
+.fw-grid__cell[data-active] {
+  outline: 2px solid var(--fw-color-accent);
+  outline-offset: -2px;
+}
+
+.fw-grid__cell[data-invalid] {
+  box-shadow: inset 0 0 0 1px var(--fw-color-danger);
+  background: var(--fw-color-danger-subtle);
+}
+
+.fw-grid__row[data-current] > .fw-grid__cell[data-invalid],
+.fw-grid__row[data-selected] > .fw-grid__cell[data-invalid] {
+  background: var(--fw-color-danger-subtle);
+}
+
+/* Row status and checkbox columns. */
+.fw-grid__cell[data-status] {
+  text-align: center;
+  font-weight: 600;
+}
+
+.fw-grid__cell[data-status='inserted'] {
+  color: var(--fw-grid-status-inserted);
+}
+
+.fw-grid__cell[data-status='updated'] {
+  color: var(--fw-grid-status-updated);
+}
+
+.fw-grid__cell[data-status='deleted'] {
+  color: var(--fw-grid-status-deleted);
+}
+
+.fw-grid__check {
+  display: block;
+  box-sizing: border-box;
+  width: 14px;
+  height: 14px;
+  margin: calc((var(--fw-grid-row-height) - 15px) / 2) auto 0;
+  border: 1px solid var(--fw-color-border-strong);
+  border-radius: 2px;
+  background: var(--fw-color-surface);
+}
+
+.fw-grid__check[data-checked] {
+  border-color: var(--fw-color-accent);
+  background: var(--fw-color-accent)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M3 7.5l2.5 2.5L11 4.5' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E")
+    center / 100% 100% no-repeat;
+}
+
+.fw-grid[data-design] {
+  pointer-events: none;
+}

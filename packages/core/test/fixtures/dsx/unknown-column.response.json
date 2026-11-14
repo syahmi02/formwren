@@ -1,0 +1,7 @@
+{
+  "status": {
+    "ok": false,
+    "code": "bad-request",
+    "message": "Column bonus is not part of this service"
+  }
+}

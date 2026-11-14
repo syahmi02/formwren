@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "types": ["node", "vscode", "vite/client"],
+    "paths": {
+      "@fw/core": ["../../packages/core/src/index.ts"],
+      "@fw/format": ["../../packages/format/src/index.ts"],
+      "@fw/components/meta": ["../../packages/components/src/meta/index.ts"],
+      "@fw/components": ["../../packages/components/src/index.ts"],
+      "@fw/designer": ["../../packages/designer/src/index.ts"],
+      "@fw/designer/contract": ["../../packages/designer/src/contract.ts"]
+    }
+  },
+  "include": ["src", "webview", "scripts", "test", "*.ts"]
+}

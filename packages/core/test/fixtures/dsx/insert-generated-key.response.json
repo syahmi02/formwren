@@ -1,0 +1,15 @@
+{
+  "status": {
+    "ok": true
+  },
+  "applied": {
+    "dsDept": {
+      "2": {
+        "deptCode": "D030"
+      },
+      "3": {
+        "deptCode": "D040"
+      }
+    }
+  }
+}

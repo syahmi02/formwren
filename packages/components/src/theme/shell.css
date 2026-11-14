@@ -1,0 +1,327 @@
+/* The application shell: menu, tab strip, popups, alerts and the loading indicator. Values come from --fw-* variables. */
+
+.fw-shell {
+  box-sizing: border-box;
+  display: flex;
+  height: 100vh;
+  color: var(--fw-color-text);
+  background: var(--fw-color-canvas);
+  font-family: var(--fw-font-family);
+  font-size: var(--fw-font-size);
+  line-height: var(--fw-line-height);
+}
+
+.fw-shell *,
+.fw-shell__overlay * {
+  box-sizing: border-box;
+}
+
+/* ---- Menu ---- */
+
+.fw-shell__menu {
+  flex: none;
+  width: 180px;
+  padding: var(--fw-space-3);
+  overflow: auto;
+  background: var(--fw-color-surface);
+  border-right: var(--fw-border-width) solid var(--fw-color-border);
+}
+
+.fw-shell__menu-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fw-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fw-shell__menu-item {
+  width: 100%;
+  min-height: var(--fw-control-height);
+  padding: 0 var(--fw-control-padding-x);
+  color: var(--fw-color-text);
+  background: transparent;
+  border: 0;
+  border-radius: var(--fw-radius);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.fw-shell__menu-item:hover {
+  background: var(--fw-color-surface-hover);
+}
+
+.fw-shell__menu-item:active {
+  background: var(--fw-color-surface-pressed);
+}
+
+.fw-shell__menu-item[aria-current='page'] {
+  color: var(--fw-color-accent);
+  background: var(--fw-color-accent-subtle);
+  font-weight: var(--fw-font-weight-strong);
+}
+
+/* ---- Tab strip and pages ---- */
+
+.fw-shell__main {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.fw-shell__tabs {
+  display: flex;
+  flex: none;
+  gap: var(--fw-space-1);
+  padding: var(--fw-space-2) var(--fw-space-3) 0;
+  overflow-x: auto;
+  background: var(--fw-color-surface);
+  border-bottom: var(--fw-border-width) solid var(--fw-color-border);
+}
+
+.fw-shell__tab-item {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  border: var(--fw-border-width) solid transparent;
+  border-bottom: 0;
+  border-radius: var(--fw-radius) var(--fw-radius) 0 0;
+}
+
+.fw-shell__tab-item[data-active] {
+  background: var(--fw-color-canvas);
+  border-color: var(--fw-color-border);
+  box-shadow: inset 0 2px 0 var(--fw-color-accent);
+}
+
+.fw-shell__tab {
+  min-height: var(--fw-control-height);
+  padding: 0 var(--fw-space-2) 0 var(--fw-control-padding-x);
+  color: var(--fw-color-text-muted);
+  background: transparent;
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+.fw-shell__tab[aria-selected='true'] {
+  color: var(--fw-color-text);
+  font-weight: var(--fw-font-weight-strong);
+}
+
+.fw-shell__tab-close,
+.fw-shell__popup-close {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin-right: var(--fw-space-2);
+  padding: 0;
+  color: var(--fw-color-text-muted);
+  background: transparent;
+  border: 0;
+  border-radius: var(--fw-radius);
+  font: inherit;
+  cursor: pointer;
+}
+
+.fw-shell__tab-close:hover,
+.fw-shell__popup-close[data-hovered] {
+  color: var(--fw-color-text);
+  background: var(--fw-color-surface-hover);
+}
+
+.fw-shell__tab:focus-visible,
+.fw-shell__tab-close:focus-visible,
+.fw-shell__menu-item:focus-visible,
+.fw-shell__popup-close[data-focus-visible],
+.fw-shell__button[data-focus-visible] {
+  outline: var(--fw-focus-ring);
+  outline-offset: var(--fw-focus-ring-offset);
+}
+
+.fw-shell__pages {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: auto;
+}
+
+.fw-shell__page[hidden] {
+  display: none;
+}
+
+/* ---- Popups, confirm and error dialogs ---- */
+
+.fw-shell__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--fw-color-overlay);
+  font-family: var(--fw-font-family);
+  font-size: var(--fw-font-size);
+  line-height: var(--fw-line-height);
+}
+
+.fw-shell__modal {
+  display: flex;
+  max-width: 100vw;
+  max-height: 100vh;
+}
+
+.fw-shell__popup,
+.fw-shell__alert {
+  display: flex;
+  flex-direction: column;
+  max-width: 100vw;
+  max-height: 100vh;
+  overflow: hidden;
+  color: var(--fw-color-text);
+  background: var(--fw-color-surface);
+  border: var(--fw-border-width) solid var(--fw-color-border-strong);
+  border-radius: var(--fw-radius-lg);
+  box-shadow: var(--fw-shadow-popup);
+  outline: none;
+}
+
+.fw-shell__popup-bar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 32px;
+  padding: 0 var(--fw-space-3) 0 var(--fw-space-4);
+  background: var(--fw-color-canvas);
+  border-bottom: var(--fw-border-width) solid var(--fw-color-border);
+}
+
+.fw-shell__popup-bar .fw-shell__popup-close {
+  margin-right: 0;
+}
+
+.fw-shell__popup-title,
+.fw-shell__alert-title {
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: var(--fw-font-size);
+  font-weight: var(--fw-font-weight-strong);
+}
+
+.fw-shell__popup-body {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+
+.fw-shell__alert {
+  width: 380px;
+  padding: var(--fw-space-5);
+  gap: var(--fw-space-3);
+}
+
+.fw-shell__alert-message {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.fw-shell__alert-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--fw-space-3);
+  margin-top: var(--fw-space-3);
+}
+
+.fw-shell__button {
+  min-width: 72px;
+  min-height: var(--fw-control-height);
+  padding: 0 var(--fw-control-padding-x);
+  color: var(--fw-color-text);
+  background: var(--fw-color-surface);
+  border: var(--fw-border-width) solid var(--fw-color-border-strong);
+  border-radius: var(--fw-radius);
+  font: inherit;
+  cursor: pointer;
+}
+
+.fw-shell__button[data-hovered] {
+  background: var(--fw-color-surface-hover);
+}
+
+.fw-shell__button[data-pressed] {
+  background: var(--fw-color-surface-pressed);
+}
+
+/* ---- Loading indicator ---- */
+
+.fw-shell__busy {
+  position: fixed;
+  right: var(--fw-space-5);
+  bottom: var(--fw-space-5);
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  gap: var(--fw-space-3);
+  padding: var(--fw-space-2) var(--fw-space-4);
+  color: var(--fw-color-text);
+  background: var(--fw-color-surface);
+  border: var(--fw-border-width) solid var(--fw-color-border-strong);
+  border-radius: var(--fw-radius-lg);
+  box-shadow: var(--fw-shadow-popup);
+  pointer-events: none;
+}
+
+/* Empty, the live region stays in the accessibility tree but takes no visible space. */
+.fw-shell__busy:not([data-shown]) {
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.fw-shell__spinner {
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--fw-color-border);
+  border-top-color: var(--fw-color-accent);
+  border-radius: 50%;
+  animation: fw-shell-spin 0.8s linear infinite;
+}
+
+@keyframes fw-shell-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fw-shell__spinner {
+    animation-duration: 3s;
+  }
+}
+
+/* ---- Popup that is still loading ---- */
+
+/* Above the confirm and error dialogs, so nothing behind it can be reached. */
+.fw-shell__overlay--loading {
+  z-index: 1200;
+}
+
+.fw-shell__loading {
+  flex-direction: row;
+  align-items: center;
+  width: auto;
+  gap: var(--fw-space-3);
+}

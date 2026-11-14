@@ -1,0 +1,1039 @@
+/* Component styles. Every value comes from a --fw-* variable (see tokens.css). */
+
+/* ---- Form, host ---- */
+
+.fw-form {
+  position: relative;
+  box-sizing: border-box;
+  color: var(--fw-color-text);
+  background: var(--fw-color-canvas);
+  font-family: var(--fw-font-family);
+  font-size: var(--fw-font-size);
+  line-height: var(--fw-line-height);
+  font-weight: var(--fw-font-weight);
+}
+
+/* Position and size come from inline style. No visual style here. */
+.fw-host {
+  box-sizing: border-box;
+}
+
+.fw-host__error {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  padding: var(--fw-space-2) var(--fw-space-3);
+  color: var(--fw-color-danger);
+  background: var(--fw-color-danger-subtle);
+  border: var(--fw-border-width) dashed var(--fw-color-danger);
+  border-radius: var(--fw-radius);
+  font-size: var(--fw-font-size-small);
+}
+
+.fw-host__placeholder {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  padding: var(--fw-space-2);
+  color: var(--fw-color-text-muted);
+  background: var(--fw-color-surface-readonly);
+  border: var(--fw-border-width) dashed var(--fw-color-border-strong);
+  border-radius: var(--fw-radius);
+  font-size: var(--fw-font-size-small);
+  text-align: center;
+}
+
+/* ---- Shared box model of every component root ---- */
+
+.fw-label,
+.fw-button,
+.fw-textinput,
+.fw-textarea,
+.fw-numberinput,
+.fw-checkbox,
+.fw-checkboxfield,
+.fw-radiogroup,
+.fw-combobox,
+.fw-datepicker,
+.fw-panel,
+.fw-tabs {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  font: inherit;
+  color: var(--fw-color-text);
+}
+
+.fw-textinput *,
+.fw-textarea *,
+.fw-numberinput *,
+.fw-checkbox *,
+.fw-radiogroup *,
+.fw-combobox *,
+.fw-datepicker *,
+.fw-panel *,
+.fw-tabs *,
+.fw-dialog * {
+  box-sizing: border-box;
+}
+
+/* ---- Label ---- */
+
+.fw-label {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--fw-color-text);
+  font-weight: var(--fw-font-weight-strong);
+  font-size: var(--fw-font-size);
+}
+
+/* text-align has no effect on a flex container's text, so alignment moves the content instead. */
+.fw-label[data-align='center'] {
+  justify-content: center;
+}
+
+.fw-label[data-align='right'] {
+  justify-content: flex-end;
+}
+
+.fw-label[data-disabled] {
+  color: var(--fw-color-text-disabled);
+}
+
+/* A label drawn inside an input component */
+.fw-textinput__label,
+.fw-textarea__label,
+.fw-numberinput__label,
+.fw-combobox__label,
+.fw-datepicker__label,
+.fw-radiogroup__label {
+  display: block;
+  flex: none;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-bottom: var(--fw-space-1);
+  color: var(--fw-color-text-muted);
+  font-size: var(--fw-font-size-small);
+  line-height: 14px;
+}
+
+/* ---- Field shells: text-like inputs ---- */
+
+.fw-textinput,
+.fw-numberinput,
+.fw-textarea,
+.fw-combobox,
+.fw-datepicker {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.fw-textinput__input,
+.fw-textarea__input,
+.fw-numberinput__input,
+.fw-combobox__input,
+.fw-datepicker__input {
+  box-sizing: border-box;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: var(--fw-control-height);
+  margin: 0;
+  padding: 0 var(--fw-control-padding-x);
+  color: var(--fw-color-text);
+  background: var(--fw-color-surface);
+  border: var(--fw-border-width) solid var(--fw-color-border-strong);
+  border-radius: var(--fw-radius);
+  font: inherit;
+  text-overflow: ellipsis;
+  outline: none;
+}
+
+.fw-numberinput__input {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.fw-textarea__input {
+  padding: var(--fw-space-2) var(--fw-control-padding-x);
+  resize: none;
+  overflow: auto;
+}
+
+.fw-textinput__input::placeholder,
+.fw-textarea__input::placeholder,
+.fw-numberinput__input::placeholder,
+.fw-combobox__input::placeholder,
+.fw-datepicker__input::placeholder {
+  color: var(--fw-color-text-muted);
+  opacity: 1;
+}
+
+.fw-textinput__input[data-hovered],
+.fw-textarea__input[data-hovered],
+.fw-numberinput__input[data-hovered],
+.fw-combobox__input[data-hovered] {
+  border-color: var(--fw-color-text-muted);
+}
+
+.fw-textinput__input[data-focused],
+.fw-textarea__input[data-focused],
+.fw-numberinput__input[data-focused],
+.fw-combobox__input[data-focused],
+.fw-textinput__input:focus,
+.fw-textarea__input:focus,
+.fw-numberinput__input:focus,
+.fw-combobox__input:focus {
+  border-color: var(--fw-color-accent);
+  outline: var(--fw-focus-ring);
+  outline-offset: calc(-1 * var(--fw-focus-ring-width));
+}
+
+.fw-textinput__input[data-invalid],
+.fw-textarea__input[data-invalid],
+.fw-numberinput__input[data-invalid],
+.fw-combobox__input[data-invalid],
+.fw-textinput__input[aria-invalid='true'],
+.fw-textarea__input[aria-invalid='true'],
+.fw-numberinput__input[aria-invalid='true'],
+.fw-combobox__input[aria-invalid='true'] {
+  border-color: var(--fw-color-danger);
+  background: var(--fw-color-danger-subtle);
+}
+
+.fw-textinput__input[data-invalid][data-focused],
+.fw-textarea__input[data-invalid][data-focused],
+.fw-numberinput__input[data-invalid][data-focused],
+.fw-combobox__input[data-invalid][data-focused] {
+  outline-color: var(--fw-color-danger);
+}
+
+.fw-textinput__input[data-disabled],
+.fw-textarea__input[data-disabled],
+.fw-numberinput__input[data-disabled],
+.fw-combobox__input[data-disabled],
+.fw-textinput__input:disabled,
+.fw-textarea__input:disabled,
+.fw-numberinput__input:disabled,
+.fw-combobox__input:disabled {
+  color: var(--fw-color-text-disabled);
+  background: var(--fw-color-surface-disabled);
+  border-color: var(--fw-color-border);
+  cursor: not-allowed;
+}
+
+.fw-textinput__input[readonly],
+.fw-textarea__input[readonly],
+.fw-numberinput__input[readonly],
+.fw-combobox__input[readonly],
+.fw-textinput__input[data-readonly],
+.fw-textarea__input[data-readonly],
+.fw-numberinput__input[data-readonly],
+.fw-combobox__input[data-readonly] {
+  background: var(--fw-color-surface-readonly);
+  border-color: var(--fw-color-border);
+}
+
+/* Inline validation message, drawn just below the box so it never changes the control's size. */
+.fw-textinput__error,
+.fw-textarea__error,
+.fw-numberinput__error,
+.fw-checkbox__error,
+.fw-radiogroup__error,
+.fw-combobox__error,
+.fw-datepicker__error {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 2;
+  max-width: 100%;
+  margin-top: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--fw-color-danger);
+  font-size: var(--fw-font-size-small);
+  line-height: 14px;
+  pointer-events: none;
+}
+
+.fw-checkbox,
+.fw-checkboxfield,
+.fw-radiogroup {
+  position: relative;
+}
+
+/* ---- Button ---- */
+
+.fw-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--fw-space-2);
+  max-height: none;
+  margin: 0;
+  padding: 0 var(--fw-space-4);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--fw-color-text);
+  background: var(--fw-color-surface);
+  border: var(--fw-border-width) solid var(--fw-color-border-strong);
+  border-radius: var(--fw-radius);
+  font: inherit;
+  font-weight: var(--fw-font-weight-strong);
+  cursor: default;
+  outline: none;
+}
+
+.fw-button[data-hovered] {
+  background: var(--fw-color-surface-hover);
+}
+
+.fw-button[data-pressed] {
+  background: var(--fw-color-surface-pressed);
+}
+
+.fw-button[data-focus-visible] {
+  outline: var(--fw-focus-ring);
+  outline-offset: var(--fw-focus-ring-offset);
+}
+
+.fw-button[data-disabled] {
+  color: var(--fw-color-text-disabled);
+  background: var(--fw-color-surface-disabled);
+  border-color: var(--fw-color-border);
+  cursor: not-allowed;
+}
+
+.fw-button[data-variant='primary'] {
+  color: var(--fw-color-text-on-accent);
+  background: var(--fw-color-accent);
+  border-color: var(--fw-color-accent);
+}
+
+.fw-button[data-variant='primary'][data-hovered] {
+  background: var(--fw-color-accent-hover);
+  border-color: var(--fw-color-accent-hover);
+}
+
+.fw-button[data-variant='primary'][data-pressed] {
+  background: var(--fw-color-accent-pressed);
+  border-color: var(--fw-color-accent-pressed);
+}
+
+.fw-button[data-variant='primary'][data-disabled] {
+  color: var(--fw-color-text-disabled);
+  background: var(--fw-color-surface-disabled);
+  border-color: var(--fw-color-border);
+}
+
+.fw-button[data-variant='danger'] {
+  color: var(--fw-color-danger);
+  border-color: var(--fw-color-danger);
+}
+
+/* ---- Checkbox and radio ---- */
+
+.fw-checkbox,
+.fw-radiogroup__option {
+  display: flex;
+  align-items: center;
+  gap: var(--fw-space-3);
+  color: var(--fw-color-text);
+  cursor: default;
+}
+
+.fw-checkbox__box,
+.fw-radiogroup__dot {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  color: var(--fw-color-text-on-accent);
+  background: var(--fw-color-surface);
+  border: var(--fw-border-width) solid var(--fw-color-border-strong);
+  border-radius: var(--fw-radius);
+}
+
+.fw-radiogroup__dot {
+  border-radius: 50%;
+}
+
+/* The box is an empty span, so the tick is drawn with borders. */
+.fw-checkbox[data-selected] .fw-checkbox__box::after {
+  content: '';
+  width: 4px;
+  height: 8px;
+  margin-bottom: 2px;
+  border: solid currentColor;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.fw-checkbox[data-indeterminate] .fw-checkbox__box::after {
+  content: '';
+  width: 8px;
+  height: 2px;
+  background: currentColor;
+}
+
+.fw-checkbox[data-hovered] .fw-checkbox__box,
+.fw-radiogroup__option[data-hovered] .fw-radiogroup__dot {
+  border-color: var(--fw-color-text-muted);
+}
+
+.fw-checkbox[data-selected] .fw-checkbox__box,
+.fw-checkbox[data-indeterminate] .fw-checkbox__box {
+  background: var(--fw-color-accent);
+  border-color: var(--fw-color-accent);
+}
+
+.fw-radiogroup__option[data-selected] .fw-radiogroup__dot {
+  border: 5px solid var(--fw-color-accent);
+  background: var(--fw-color-surface);
+}
+
+.fw-checkbox[data-focus-visible] .fw-checkbox__box,
+.fw-radiogroup__option[data-focus-visible] .fw-radiogroup__dot {
+  outline: var(--fw-focus-ring);
+  outline-offset: var(--fw-focus-ring-offset);
+}
+
+.fw-checkbox[data-invalid] .fw-checkbox__box,
+.fw-radiogroup[data-invalid] .fw-radiogroup__dot {
+  border-color: var(--fw-color-danger);
+}
+
+.fw-checkbox[data-disabled],
+.fw-radiogroup__option[data-disabled] {
+  color: var(--fw-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.fw-checkbox[data-disabled] .fw-checkbox__box,
+.fw-radiogroup__option[data-disabled] .fw-radiogroup__dot {
+  background: var(--fw-color-surface-disabled);
+  border-color: var(--fw-color-border);
+}
+
+.fw-checkbox[data-readonly] .fw-checkbox__box,
+.fw-radiogroup[data-readonly] .fw-radiogroup__dot {
+  background: var(--fw-color-surface-readonly);
+  border-color: var(--fw-color-border);
+}
+
+.fw-checkbox__label {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.fw-radiogroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fw-space-2);
+}
+
+.fw-radiogroup__options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fw-space-2);
+  min-height: 0;
+}
+
+.fw-radiogroup[data-orientation='horizontal'] > .fw-radiogroup__options {
+  flex-flow: row wrap;
+  align-items: center;
+  gap: var(--fw-space-2) var(--fw-space-5);
+}
+
+.fw-radiogroup__text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* ---- ComboBox and DatePicker: trigger button next to the input ---- */
+
+.fw-combobox__group,
+.fw-datepicker__group {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  min-height: var(--fw-control-height);
+}
+
+.fw-combobox__group > .fw-combobox__input,
+.fw-datepicker__group > .fw-datepicker__input {
+  padding-right: calc(var(--fw-control-height) + 2px);
+}
+
+.fw-combobox__button,
+.fw-datepicker__button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--fw-control-height);
+  margin: 0;
+  padding: 0;
+  color: var(--fw-color-text-muted);
+  background: transparent;
+  border: 0;
+  border-radius: 0 var(--fw-radius) var(--fw-radius) 0;
+  font: inherit;
+  outline: none;
+}
+
+.fw-combobox__button[data-hovered],
+.fw-datepicker__button[data-hovered] {
+  color: var(--fw-color-text);
+  background: var(--fw-color-surface-hover);
+}
+
+.fw-combobox__button[data-pressed],
+.fw-datepicker__button[data-pressed] {
+  background: var(--fw-color-surface-pressed);
+}
+
+.fw-combobox__button[data-focus-visible],
+.fw-datepicker__button[data-focus-visible] {
+  outline: var(--fw-focus-ring);
+  outline-offset: calc(-1 * var(--fw-focus-ring-width));
+}
+
+.fw-combobox__button[data-disabled],
+.fw-datepicker__button[data-disabled] {
+  color: var(--fw-color-text-disabled);
+}
+
+/* DatePicker: the input is React Aria's DateInput, a row of segments */
+.fw-datepicker__input {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.fw-datepicker__input[data-hovered] {
+  border-color: var(--fw-color-text-muted);
+}
+
+.fw-datepicker__input[data-focus-within] {
+  border-color: var(--fw-color-accent);
+  outline: var(--fw-focus-ring);
+  outline-offset: calc(-1 * var(--fw-focus-ring-width));
+}
+
+.fw-datepicker__input[data-invalid] {
+  border-color: var(--fw-color-danger);
+  background: var(--fw-color-danger-subtle);
+}
+
+.fw-datepicker__input[data-invalid][data-focus-within] {
+  outline-color: var(--fw-color-danger);
+}
+
+.fw-datepicker__input[data-disabled] {
+  color: var(--fw-color-text-disabled);
+  background: var(--fw-color-surface-disabled);
+  border-color: var(--fw-color-border);
+  cursor: not-allowed;
+}
+
+.fw-datepicker[data-readonly] .fw-datepicker__input,
+.fw-datepicker__input[data-readonly] {
+  background: var(--fw-color-surface-readonly);
+  border-color: var(--fw-color-border);
+}
+
+.fw-datepicker__segment {
+  padding: 0 1px;
+  border-radius: 2px;
+  outline: none;
+  caret-color: transparent;
+}
+
+.fw-datepicker__segment[data-placeholder] {
+  color: var(--fw-color-text-muted);
+}
+
+.fw-datepicker__segment[data-focused] {
+  color: var(--fw-color-text-on-accent);
+  background: var(--fw-color-accent);
+}
+
+.fw-datepicker__segment[data-disabled] {
+  color: var(--fw-color-text-disabled);
+}
+
+/* ---- Popups: rendered in a portal, so they use only tokens and never depend on .fw-form ---- */
+
+.fw-combobox__popover,
+.fw-datepicker__popover,
+.fw-popover {
+  box-sizing: border-box;
+  min-width: var(--trigger-width, 0);
+  max-height: 280px;
+  overflow: auto;
+  color: var(--fw-color-text);
+  background: var(--fw-color-surface);
+  border: var(--fw-border-width) solid var(--fw-color-border-strong);
+  border-radius: var(--fw-radius);
+  box-shadow: var(--fw-shadow-popup);
+  font-family: var(--fw-font-family);
+  font-size: var(--fw-font-size);
+  line-height: var(--fw-line-height);
+}
+
+.fw-datepicker__popover {
+  min-width: 0;
+  padding: var(--fw-space-3);
+}
+
+.fw-combobox__list,
+.fw-listbox {
+  display: block;
+  margin: 0;
+  padding: var(--fw-space-1);
+  outline: none;
+}
+
+.fw-combobox__option,
+.fw-listbox__option {
+  display: flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 2px var(--fw-control-padding-x);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  border-radius: var(--fw-radius);
+  cursor: default;
+  outline: none;
+}
+
+.fw-combobox__option[data-focused],
+.fw-combobox__option[data-hovered],
+.fw-listbox__option[data-focused],
+.fw-listbox__option[data-hovered] {
+  background: var(--fw-color-surface-hover);
+}
+
+.fw-combobox__option[data-selected],
+.fw-listbox__option[data-selected] {
+  background: var(--fw-color-accent-subtle);
+  font-weight: var(--fw-font-weight-strong);
+}
+
+.fw-combobox__option[data-focus-visible],
+.fw-listbox__option[data-focus-visible] {
+  outline: var(--fw-focus-ring);
+  outline-offset: -2px;
+}
+
+.fw-combobox__option[data-disabled],
+.fw-listbox__option[data-disabled] {
+  color: var(--fw-color-text-disabled);
+}
+
+.fw-combobox__empty {
+  padding: var(--fw-space-2) var(--fw-control-padding-x);
+  color: var(--fw-color-text-muted);
+}
+
+/* Calendar. The header cells (th) and gridcells (td) have no class, so they are reached through the grid. */
+.fw-datepicker__dialog {
+  outline: none;
+}
+
+.fw-datepicker__calendar {
+  width: 224px;
+  color: var(--fw-color-text);
+}
+
+.fw-datepicker__calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--fw-space-3);
+}
+
+.fw-datepicker__calendar-title {
+  margin: 0;
+  font-size: var(--fw-font-size);
+  font-weight: var(--fw-font-weight-strong);
+}
+
+.fw-datepicker__calendar-nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  color: var(--fw-color-text);
+  background: transparent;
+  border: 0;
+  border-radius: var(--fw-radius);
+  font: inherit;
+  outline: none;
+}
+
+.fw-datepicker__calendar-nav[data-hovered] {
+  background: var(--fw-color-surface-hover);
+}
+
+.fw-datepicker__calendar-nav[data-pressed] {
+  background: var(--fw-color-surface-pressed);
+}
+
+.fw-datepicker__calendar-nav[data-focus-visible] {
+  outline: var(--fw-focus-ring);
+}
+
+.fw-datepicker__calendar-nav[data-disabled] {
+  color: var(--fw-color-text-disabled);
+}
+
+.fw-datepicker__calendar-grid {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.fw-datepicker__calendar-grid th {
+  height: 24px;
+  color: var(--fw-color-text-muted);
+  font-size: var(--fw-font-size-small);
+  font-weight: var(--fw-font-weight);
+  text-align: center;
+}
+
+.fw-datepicker__calendar-grid td {
+  padding: 1px 0;
+  text-align: center;
+}
+
+.fw-datepicker__calendar-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 26px;
+  margin: 0 auto;
+  border-radius: var(--fw-radius);
+  font-variant-numeric: tabular-nums;
+  cursor: default;
+  outline: none;
+}
+
+.fw-datepicker__calendar-cell[data-hovered] {
+  background: var(--fw-color-surface-hover);
+}
+
+.fw-datepicker__calendar-cell[data-outside-month] {
+  display: none;
+}
+
+.fw-datepicker__calendar-cell[data-selected] {
+  color: var(--fw-color-text-on-accent);
+  background: var(--fw-color-accent);
+}
+
+.fw-datepicker__calendar-cell[data-focus-visible] {
+  outline: var(--fw-focus-ring);
+  outline-offset: var(--fw-focus-ring-offset);
+}
+
+.fw-datepicker__calendar-cell[data-disabled],
+.fw-datepicker__calendar-cell[data-unavailable] {
+  color: var(--fw-color-text-disabled);
+}
+
+.fw-datepicker__calendar-cell[data-unavailable] {
+  text-decoration: line-through;
+}
+
+/* ---- Panel ---- */
+
+/* The title is a row in normal flow, so child coordinates (relative to the body) start under it. */
+.fw-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--fw-color-surface);
+  border: var(--fw-border-width) solid var(--fw-color-border);
+  border-radius: var(--fw-radius);
+}
+
+.fw-panel[data-bare],
+.fw-panel[data-variant='plain'] {
+  background: transparent;
+  border-color: transparent;
+}
+
+.fw-panel__title {
+  flex: none;
+  height: var(--fw-panel-title-height);
+  margin: 0;
+  padding: 0 var(--fw-space-3);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--fw-color-text-muted);
+  border-bottom: var(--fw-border-width) solid var(--fw-color-border);
+  font-size: var(--fw-font-size-small);
+  font-weight: var(--fw-font-weight-strong);
+  line-height: calc(var(--fw-panel-title-height) - var(--fw-border-width));
+}
+
+.fw-panel__body {
+  position: relative;
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+}
+
+/* ---- Tabs ---- */
+
+.fw-tabs {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--fw-color-surface);
+  border: var(--fw-border-width) solid var(--fw-color-border);
+  border-radius: var(--fw-radius);
+  overflow: hidden;
+}
+
+.fw-tabs__list {
+  display: flex;
+  flex: none;
+  gap: 0;
+  padding: 0 var(--fw-space-2);
+  overflow-x: auto;
+  background: var(--fw-color-canvas);
+  border-bottom: var(--fw-border-width) solid var(--fw-color-border);
+}
+
+.fw-tabs__tab {
+  position: relative;
+  flex: none;
+  margin: 0;
+  padding: 0 var(--fw-space-4);
+  height: var(--fw-control-height);
+  color: var(--fw-color-text-muted);
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  font: inherit;
+  white-space: nowrap;
+  cursor: default;
+  outline: none;
+}
+
+.fw-tabs__tab[data-hovered] {
+  color: var(--fw-color-text);
+  background: var(--fw-color-surface-hover);
+}
+
+.fw-tabs__tab[data-selected] {
+  color: var(--fw-color-text);
+  border-bottom-color: var(--fw-color-accent);
+  font-weight: var(--fw-font-weight-strong);
+}
+
+.fw-tabs__tab[data-focus-visible] {
+  outline: var(--fw-focus-ring);
+  outline-offset: calc(-1 * var(--fw-focus-ring-width));
+}
+
+.fw-tabs__tab[data-disabled] {
+  color: var(--fw-color-text-disabled);
+  cursor: not-allowed;
+}
+
+/* Pages keep their `hidden` attribute behaviour, so display is only set when not hidden. */
+.fw-tabs__panel,
+.fw-tabs__page {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.fw-tabs__panel[hidden],
+.fw-tabs__page[hidden] {
+  display: none;
+}
+
+/* ---- Dialog ---- */
+
+.fw-dialog__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--fw-color-overlay);
+}
+
+.fw-dialog__modal {
+  display: flex;
+  max-width: 100vw;
+  max-height: 100vh;
+}
+
+.fw-dialog {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  max-width: 100vw;
+  max-height: 100vh;
+  overflow: hidden;
+  color: var(--fw-color-text);
+  background: var(--fw-color-surface);
+  border: var(--fw-border-width) solid var(--fw-color-border-strong);
+  border-radius: var(--fw-radius-lg);
+  box-shadow: var(--fw-shadow-popup);
+  font-family: var(--fw-font-family);
+  font-size: var(--fw-font-size);
+  line-height: var(--fw-line-height);
+  outline: none;
+}
+
+.fw-dialog__header,
+.fw-dialog__titlebar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 32px;
+  padding: 0 var(--fw-space-3) 0 var(--fw-space-4);
+  background: var(--fw-color-canvas);
+  border-bottom: var(--fw-border-width) solid var(--fw-color-border);
+}
+
+.fw-dialog > .fw-dialog__title {
+  flex: none;
+  padding: 0 var(--fw-space-4);
+  line-height: 32px;
+  background: var(--fw-color-canvas);
+  border-bottom: var(--fw-border-width) solid var(--fw-color-border);
+}
+
+/* In design mode the dialog is drawn in place and fills its host. */
+.fw-host > .fw-dialog {
+  width: 100%;
+  height: 100%;
+}
+
+.fw-dialog__title {
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: var(--fw-font-size);
+  font-weight: var(--fw-font-weight-strong);
+}
+
+.fw-dialog__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  color: var(--fw-color-text-muted);
+  background: transparent;
+  border: 0;
+  border-radius: var(--fw-radius);
+  font: inherit;
+  outline: none;
+}
+
+.fw-dialog__close[data-hovered] {
+  color: var(--fw-color-text);
+  background: var(--fw-color-surface-hover);
+}
+
+.fw-dialog__close[data-pressed] {
+  background: var(--fw-color-surface-pressed);
+}
+
+.fw-dialog__close[data-focus-visible] {
+  outline: var(--fw-focus-ring);
+}
+
+.fw-dialog__body {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+
+.fw-dialog__footer {
+  display: flex;
+  flex: none;
+  justify-content: flex-end;
+  gap: var(--fw-space-3);
+  padding: var(--fw-space-3) var(--fw-space-4);
+  border-top: var(--fw-border-width) solid var(--fw-color-border);
+}
+
+/* ---- Honour reduced motion for anything React Aria animates ---- */
+
+@media (prefers-reduced-motion: reduce) {
+  .fw-form *,
+  .fw-dialog *,
+  .fw-combobox__popover,
+  .fw-datepicker__popover {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* A Panel used as a tab page: the tab already shows the title and the Tabs box draws the border. */
+.fw-tabs__panel > .fw-host > .fw-panel {
+  background: transparent;
+  border-color: transparent;
+}
+
+.fw-tabs__panel > .fw-host > .fw-panel > .fw-panel__title {
+  display: none;
+}
+
+/* ---- Required cue ----
+ * A marker after the label of any required input. The "/ ''" part gives the generated content an empty
+ * text alternative, so a screen reader doesn't read it; the input itself carries aria-required. */
+.fw-textinput[data-required] > .fw-textinput__label::after,
+.fw-textarea[data-required] > .fw-textarea__label::after,
+.fw-numberinput[data-required] > .fw-numberinput__label::after,
+.fw-combobox[data-required] > .fw-combobox__label::after,
+.fw-datepicker[data-required] .fw-datepicker__label::after,
+.fw-radiogroup[data-required] > .fw-radiogroup__label::after,
+.fw-checkbox[data-required] .fw-checkbox__label::after {
+  content: ' *';
+  content: ' *' / '';
+  color: var(--fw-color-danger);
+  font-weight: 600;
+}
