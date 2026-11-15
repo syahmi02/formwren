@@ -502,6 +502,12 @@ test.describe('P1: Grid at 100,000 rows x 20 columns', () => {
     record('n4', out);
     console.log(`P1 N-4 (${LABEL}) ${JSON.stringify(out)}`);
 
+    // REQUIREMENTS N-4: the timing limits are measured on the owner's PC, not in CI, where shared
+    // machines make timings noisy. CI still runs every correctness check above and records the numbers.
+    if (process.env.CI) {
+      test.info().annotations.push({ type: 'N-4', description: 'Timing limits are not checked in CI. The numbers are recorded in the log.' });
+      return;
+    }
     expect(timings.firstPaintMs, 'first paint, from createForm to the painted frame with rows').toBeLessThanOrEqual(FIRST_PAINT_MS);
     for (const [kind, r] of Object.entries(scroll)) {
       const s = r as { frameMs: { p95: number }; longestTaskMs: number };
